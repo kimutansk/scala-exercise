@@ -4,7 +4,7 @@ import akka.actor.Actor
 
 /**
  * Akka Actor用のHello Worldクラス
- * メッセージを受け取った内容の頭にメッセージを付与してコンソールに出力する。
+ * 受け取った内容の頭にメッセージを付与してコンソールに出力する。
  *
  * @author kimutansk
  */
