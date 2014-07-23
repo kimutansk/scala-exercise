@@ -8,8 +8,12 @@ import akka.actor.Actor
  *
  * @author kimutansk
  */
-class HelloWorldActor extends Actor {
-  override def receive: Actor.Receive = {
-    case x => println("Hello world! " + x)
+class HelloWorldActor(name :String) extends Actor {
+  override def preStart = {println(name + " is started.")  }
+
+  def receive = {
+    case msg: String  => { println("HelloWorldActor: Hello world! " + msg + " My name is " + name) }
   }
+
+  override def postStop = {println(name + " is stopped.")  }
 }
