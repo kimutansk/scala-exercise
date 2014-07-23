@@ -12,9 +12,13 @@ object HelloWorldApp extends App {
     val system = ActorSystem.apply("HelloWorldApp")
     val helloWorldActor = system.actorOf(Props.apply(new HelloWorldActor("actor1")), "HelloWorldActor")
 
-    helloWorldActor ! """Test1"""
-    helloWorldActor ! """Test2"""
-    helloWorldActor ! 1
+    val result1 = helloWorldActor ! """Test1"""
+    val result2 = helloWorldActor ! """Test2"""
+    val result3 = helloWorldActor ! 1
+
+    println("Test1 result is " + result1)
+    println("Test2 result is " + result2)
+    println("1 result is " + result3)
 
     system.shutdown()
   }

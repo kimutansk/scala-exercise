@@ -9,11 +9,23 @@ import akka.actor.Actor
  * @author kimutansk
  */
 class HelloWorldActor(name :String) extends Actor {
+  /**
+   * Actor初期化時処理
+   */
   override def preStart = {println(name + " is started.")  }
 
+  /**
+   * メッセージ受信時処理
+   */
   def receive = {
-    case msg: String  => { println("HelloWorldActor: Hello world! " + msg + " My name is " + name) }
+    case msg: String  => {
+      println("HelloWorldActor: Hello world! " + msg + " My name is " + name)
+      "HelloWorldActor: Hello world! " + msg + " My name is " + name
+    }
   }
 
+  /**
+   * Actor終了時処理
+   */
   override def postStop = {println(name + " is stopped.")  }
 }
