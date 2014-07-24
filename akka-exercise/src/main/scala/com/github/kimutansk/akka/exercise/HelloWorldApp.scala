@@ -14,12 +14,11 @@ object HelloWorldApp extends App {
 
     val result1 = helloWorldActor ! """Test1"""
     val result2 = helloWorldActor ! """Test2"""
-    val result3 = helloWorldActor ! 1
 
     println("Test1 result is " + result1)
     println("Test2 result is " + result2)
-    println("1 result is " + result3)
 
+    Thread.sleep(5000)
     system.shutdown()
   }
 }

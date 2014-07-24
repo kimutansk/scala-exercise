@@ -7,12 +7,16 @@ import akka.actor.Actor
  *
  * @author kimutansk
  */
-class ChildActor(name :String) extends Actor {
+class ChildActor(name: String) extends Actor {
 
-  /**
-   * メッセージ受信時処理
-   */
+  /** メッセージ受信時処理 */
   def receive = {
-    case msg: String  =>
+    case msg: String => {
+      val message = "ChildActor: Received String " + msg + " My name is " + name
+      println(message)
+      println(sender)
+      println(sender.getClass)
+      sender ! message.length
+    }
   }
 }

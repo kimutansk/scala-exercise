@@ -11,17 +11,13 @@ import com.github.kimutansk.akka.exercise.HelloWorldActor
 object MessageSendApp extends App {
   override def main(args: Array[String]): Unit = {
     val system = ActorSystem.apply("MessageSendApp")
-    val childActor = system.actorOf(Props.apply(new ChildActor("child")))
-    val parentActor = system.actorOf(Props.apply(new ParentActor("actor1", childActor)))
+    val childActor = system.actorOf(Props.apply(new ChildActor("child1")))
+    val parentActor = system.actorOf(Props.apply(new ParentActor("parent1", childActor)))
 
-    val result1 = parentActor ! """Test1"""
-    val result2 = parentActor ! """Test2"""
-    val result3 = parentActor ! 1
+    parentActor ! """Test1"""
+    parentActor ! """Test2"""
 
-    println("Test1 result is " + result1)
-    println("Test2 result is " + result2)
-    println("1 result is " + result3)
-
+    Thread.sleep(5000)
     system.shutdown()
   }
 }

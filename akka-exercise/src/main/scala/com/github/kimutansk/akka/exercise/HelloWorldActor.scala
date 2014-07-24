@@ -20,7 +20,7 @@ class HelloWorldActor(name :String) extends Actor {
   def receive = {
     case msg: String  => {
       println("HelloWorldActor: Hello world! " + msg + " My name is " + name)
-      "HelloWorldActor: Hello world! " + msg + " My name is " + name
+      sender ! "HelloWorldActor: Hello world! " + msg + " My name is " + name
     }
   }
 
