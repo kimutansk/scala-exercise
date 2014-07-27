@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <name>spark-example</name>
+  <groupId>com.github.kimutansk</groupId>
+  <artifactId>spark-example</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <!-- プロジェクトプロパティ -->
+  <properties>
+    <jdk.version>1.7</jdk.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <site.encoding>UTF-8</site.encoding>
+
+    <scala.version>2.10.4</scala.version>
+    <scala.binary.version>2.10</scala.binary.version>
+    <spark.version>1.0.1</spark.version>
+  </properties>
+
+  <!-- リポジトリ設定 -->
+  <repositories>
+    <repository>
+      <id>maven.org</id>
+      <name>Maven</name>
+      <url>http://repo1.maven.org/maven2</url>
+    </repository>
+    <repository>
+      <id>apache.org</id>
+      <name>Apache</name>
+      <url>https://repository.apache.org/content/repositories/releases</url>
+    </repository>
+    <repository>
+      <id>jboss-repo</id>
+      <name>JBoss Repository</name>
+      <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+    </repository>
+    <repository>
+      <id>cloudera-repo</id>
+      <name>Cloudera Repository</name>
+      <url>https://repository.cloudera.com/artifactory/cloudera-repos</url>
+    </repository>
+    <repository>
+      <id>mapr-repo</id>
+      <name>MapR Repository</name>
+      <url>http://repository.mapr.com/maven</url>
+    </repository>
+    <repository>
+      <id>spring-releases</id>
+      <name>Spring Release Repository</name>
+      <url>http://repo.spring.io/libs-release</url>
+    </repository>
+  </repositories>
+
+  <!-- 依存関係 -->
+  <dependencies>
+
+    <!-- Test -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+      <version>1.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.9.5</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Spark -->
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-core_${scala.binary.version}</artifactId>
+      <version>${spark.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- ビルド設定 -->
+  <build>
+    <finalName>${project.artifactId}-${project.version}</finalName>
+    <!-- ソースコードのルートパスの指定 -->
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <defaultGoal>validate</defaultGoal>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>2.3.2</version>
+          <configuration>
+            <source>${jdk.version}</source>
+            <target>${jdk.version}</target>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <failOnError>true</failOnError>
+            <fork>true</fork>
+            <compilerArgument>-nowarn</compilerArgument>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.0</version>
+          <configuration>
+            <locales>ja</locales>
+            <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
+            <outputEncoding>${site.encoding}</outputEncoding>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.2.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9</version>
+        <configuration>
+          <source>${java.version}</source>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <docencoding>${site.encoding}</docencoding>
+          <charset>${site.encoding}</charset>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-5</version>
+        <configuration>
+          <finalName>${project.name}</finalName>
+          <descriptors>
+            <descriptor>src/main/assembly/distribution.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <id>assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- レポート -->
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.6</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>index</report>
+              <report>summary</report>
+              <report>project-team</report>
+              <report>plugin-management</report>
+              <report>plugins</report>
+              <!-- report>dependencies</report -->
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <inputEncoding> ${project.build.sourceEncoding} </inputEncoding>
+          <outputEncoding>${site.encoding}</outputEncoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9</version>
+        <configuration>
+          <source>${java.version}</source>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <docencoding>${site.encoding}</docencoding>
+          <charset>${site.encoding}</charset>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>2.5.2</version>
+        <configuration>
+          <!-- includeFilterFile>${basedir}/findbugs-include.xml</includeFilterFile -->
+          <excludeFilterFile>${basedir}/findbugs-exclude.xml</excludeFilterFile>
+          <xmlOutput>true</xmlOutput>
+          <failOnError>false</failOnError>
+          <!-- High|Normal|Low|Exp|Ignore -->
+          <threshold>Normal</threshold>
+          <!-- Min|Default|Max -->
+          <effort>Default</effort>
+          <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javancss-maven-plugin</artifactId>
+        <version>2.0</version>
+        <configuration>
+          <lineThreshold>300</lineThreshold>
+          <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>ncss</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
