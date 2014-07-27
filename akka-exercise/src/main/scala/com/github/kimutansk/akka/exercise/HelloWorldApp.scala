@@ -16,9 +16,10 @@ object HelloWorldApp extends App {
     val system = ActorSystem("HelloWorldApp")
     val helloWorldActor = system.actorOf(Props.apply(new HelloWorldActor("actor1")), "HelloWorldActor")
     implicit val timeout = Timeout(5000, TimeUnit.MILLISECONDS) // ? 実行時の暗黙タイムアウト設定
+    val time = Timeout(5000, TimeUnit.MILLISECONDS)
 
     val futureTest1 = helloWorldActor ? """Test1"""
-    val futureTest2 = helloWorldActor ? """Test2"""
+    val futureTest2 = helloWorldActor.?("""Test2""")(time)
     val unitTest3  = helloWorldActor ! """Test3"""
 
     println("Test1 future is " + futureTest1)
