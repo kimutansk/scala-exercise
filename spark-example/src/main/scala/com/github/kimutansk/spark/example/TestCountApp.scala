@@ -1,7 +1,6 @@
 package com.github.kimutansk.spark.example
 
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.SparkContext._
 
 /**
  * テキストファイルをRDDに読み込み、RDDに対して繰り返しテキストカウントを行うSparkサンプルアプリケーション
