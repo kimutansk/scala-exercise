@@ -7,7 +7,7 @@ import org.apache.spark.{SparkConf, SparkContext}
  */
 object TextCountApp {
   def main(args: Array[String]) {
-    val logFile = "C:/pom.xml"
+    val logFile = args(0)
     val conf = new SparkConf().setAppName("TextCountApp").setMaster("local")
     val sc = new SparkContext(conf)
     val logData = sc.textFile(logFile, 2).cache()
