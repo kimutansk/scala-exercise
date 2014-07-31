@@ -14,10 +14,13 @@ object MessageSendApp extends App {
     val childActor1 = system.actorOf(Props.apply(new ChildActor("child1")))
     val childActor2 = system.actorOf(Props.apply(new ChildActor("child2")))
     val childActor3 = system.actorOf(Props.apply(new ChildActor("child3")))
-    val parentActor = system.actorOf(Props.apply(new ParentActor("parent1", childActor1)))
+    val seq = IndexedSeq(childActor1,childActor2,  childActor3)
+
+    val parentActor = system.actorOf(Props.apply(new ParentActor("parent1", seq)))
 
     parentActor ! """Test1"""
     parentActor ! """Test2"""
+    parentActor ! """Test3"""
 
     Thread.sleep(5000)
     system.shutdown()
