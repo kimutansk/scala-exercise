@@ -9,8 +9,8 @@ import scala.collection.immutable
  *
  * @author kimutansk
  */
-class ParentActor(name: String, childActorList: IndexedSeq[ActorRef]) extends Actor {
-
+class ParentActor(name: String, childActorList: immutable.IndexedSeq[ActorRef]) extends Actor {
+  // 初期化時に与えられたActorListに対して順に送信するよう初期化
   val routees = immutable.IndexedSeq.tabulate(childActorList.size)(i => new ActorRefRoutee(childActorList(i)))
   val router = new Router(new RoundRobinRoutingLogic, routees)
 

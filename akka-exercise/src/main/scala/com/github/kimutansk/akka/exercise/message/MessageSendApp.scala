@@ -2,6 +2,7 @@ package com.github.kimutansk.akka.exercise.message
 
 import akka.actor.{Props, ActorSystem}
 import com.github.kimutansk.akka.exercise.HelloWorldActor
+import scala.collection.immutable
 
 /**
  * メッセージ送受信確認用App
@@ -14,7 +15,7 @@ object MessageSendApp extends App {
     val childActor1 = system.actorOf(Props.apply(new ChildActor("child1")))
     val childActor2 = system.actorOf(Props.apply(new ChildActor("child2")))
     val childActor3 = system.actorOf(Props.apply(new ChildActor("child3")))
-    val seq = IndexedSeq(childActor1,childActor2,  childActor3)
+    val seq = immutable.IndexedSeq(childActor1,childActor2,  childActor3)
 
     val parentActor = system.actorOf(Props.apply(new ParentActor("parent1", seq)))
 
