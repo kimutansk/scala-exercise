@@ -1,7 +1,7 @@
 package com.github.kimutansk.akka.exercise.message
 
 import akka.actor.{ActorRef, Actor}
-import akka.routing.{ActorRefRoutee, RoundRobinRoutingLogic, Router}
+import akka.routing.{RoutingLogic, ActorRefRoutee, RoundRobinRoutingLogic, Router}
 import scala.collection.immutable
 
 /**
@@ -9,10 +9,10 @@ import scala.collection.immutable
  *
  * @author kimutansk
  */
-class ParentActor(name: String, childActorList: immutable.IndexedSeq[ActorRef]) extends Actor {
+class ParentActor(name: String, childActorList: immutable.IndexedSeq[ActorRef], routingLogic: RoutingLogic) extends Actor {
   // 初期化時に与えられたActorListに対して順に送信するよう初期化
   val routees = immutable.IndexedSeq.tabulate(childActorList.size)(i => new ActorRefRoutee(childActorList(i)))
-  val router = new Router(new RoundRobinRoutingLogic, routees)
+  val router = new Router(routingLogic, routees)
 
   /** メッセージ受信時処理 */
   def receive = {
