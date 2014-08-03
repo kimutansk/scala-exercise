@@ -14,8 +14,6 @@ class ChildActor(name: String) extends Actor {
     case msg: String => {
       val message = "ChildActor: Received String " + msg + " My name is " + name
       println(message)
-      println(sender)
-      println(sender.getClass)
       sender ! message.length
     }
   }

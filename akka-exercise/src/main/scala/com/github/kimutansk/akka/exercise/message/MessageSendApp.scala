@@ -25,6 +25,7 @@ object MessageSendApp extends App {
     parentActor ! """Test1"""
     parentActor ! """Test2"""
     parentActor ! """Test3"""
+    parentActor ! """Test4"""
 
     Thread.sleep(5000)
     system.shutdown()
