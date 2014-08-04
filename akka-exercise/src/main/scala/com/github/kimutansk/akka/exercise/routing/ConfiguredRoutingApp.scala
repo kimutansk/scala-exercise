@@ -1,9 +1,8 @@
 package com.github.kimutansk.akka.exercise.routing
 
-import akka.actor.{Props, ActorSystem}
-import com.github.kimutansk.akka.exercise.message.{ParentActor, ChildActor}
-import scala.collection.immutable
-import akka.routing.RoundRobinRoutingLogic
+import akka.actor.ActorSystem
+import com.github.kimutansk.akka.exercise.message.ChildActor
+import com.typesafe.config.ConfigFactory
 
 
 /**
@@ -11,7 +10,8 @@ import akka.routing.RoundRobinRoutingLogic
  */
 object ConfiguredRoutingApp extends App {
   override def main(args: Array[String]): Unit = {
-    val system = ActorSystem.apply("MessageSendApp")
+    val config = ConfigFactory.load()
+    val system = ActorSystem.apply("ConfiguredRoutingApp", config.getConfig("ConfiguredRoutingApp"))
     println(system.settings);
   }
 }
