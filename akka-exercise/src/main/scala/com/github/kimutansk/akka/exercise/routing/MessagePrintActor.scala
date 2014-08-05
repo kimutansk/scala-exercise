@@ -10,7 +10,7 @@ class MessagePrintActor extends Actor {
 
   def receive = {
     case msg: String => {
-      val message = "ChildActor: Received String " + msg + " My name is " + self.path
+      val message = self.path + ": Received String " + msg
       println(message)
     }
   }

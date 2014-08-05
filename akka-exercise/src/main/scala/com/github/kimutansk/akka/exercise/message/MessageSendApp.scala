@@ -1,7 +1,6 @@
 package com.github.kimutansk.akka.exercise.message
 
 import akka.actor.{Props, ActorSystem}
-import com.github.kimutansk.akka.exercise.HelloWorldActor
 import scala.collection.immutable
 import akka.routing.RoundRobinRoutingLogic
 
