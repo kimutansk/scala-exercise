@@ -11,13 +11,13 @@ import akka.routing.FromConfig
 object ConfiguredRoutingApp extends App {
   override def main(args: Array[String]): Unit = {
     val system = ActorSystem.apply("ConfiguredRoutingApp")
-    val router = system.actorOf(FromConfig.getInstance().props(Props.apply(new MessagePrintActor) ),
-    "router")
+    val router1 = system.actorOf(FromConfig.getInstance().props(Props.apply(new MessagePrintActor) ),
+    "router1")
 
-    router ! "Test1"
-    router ! "Test2"
-    router ! "Test3"
-    router ! "Test4"
+    router1 ! "Test1"
+    router1 ! "Test2"
+    router1 ! "Test3"
+    router1 ! "Test4"
 
     Thread.sleep(5000)
     system.shutdown()
