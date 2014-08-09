@@ -12,6 +12,7 @@ class MessagePrintActor extends Actor {
     case msg: String => {
       val message = self.path + ": Received String " + msg
       println(message)
+      sender ! message
     }
   }
 }

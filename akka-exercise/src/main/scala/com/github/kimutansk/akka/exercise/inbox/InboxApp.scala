@@ -1,7 +1,6 @@
 package com.github.kimutansk.akka.exercise.inbox
 
-import akka.actor.{ActorDSL, Inbox, Props, ActorSystem}
-import akka.routing.FromConfig
+import akka.actor.{ActorDSL, Props, ActorSystem}
 import com.github.kimutansk.akka.exercise.routing.MessagePrintActor
 import scala.concurrent.duration._
 import java.util.concurrent.TimeUnit
@@ -12,18 +11,17 @@ import java.util.concurrent.TimeUnit
 object InboxApp extends App {
   override def main(args: Array[String]): Unit = {
     implicit val system = ActorSystem.apply("ConfiguredRoutingApp")
-    val router1 = system.actorOf(FromConfig.getInstance().props(Props[MessagePrintActor]),
-      "router1")
+
+    val actor1 = system.actorOf(Props[MessagePrintActor])
+
     val rootInbox = ActorDSL.inbox()
-    rootInbox.watch(router1)
-    rootInbox.send(router1, "Test0")
+    rootInbox.send(actor1, "Test1")
+    rootInbox.send(actor1, "Test2")
+    rootInbox.send(actor1, "Test3")
+    rootInbox.send(actor1, "Test4")
 
-    router1 ! "Test1"
-    router1 ! "Test2"
-    router1 ! "Test3"
-    router1 ! "Test4"
-
-    println(rootInbox.getRef())
+    val received = rootInbox.receive()
+    println(received)
 
     Thread.sleep(5000)
     system.shutdown()
