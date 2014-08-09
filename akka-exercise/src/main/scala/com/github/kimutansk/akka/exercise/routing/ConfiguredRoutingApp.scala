@@ -11,7 +11,7 @@ import akka.routing.FromConfig
 object ConfiguredRoutingApp extends App {
   override def main(args: Array[String]): Unit = {
     val system = ActorSystem.apply("ConfiguredRoutingApp")
-    val router1 = system.actorOf(FromConfig.getInstance().props(Props[MessagePrintActor]),
+    val router1 = system.actorOf(FromConfig.props(Props[MessagePrintActor]),
       "router1")
 
     router1 ! "Test1"
