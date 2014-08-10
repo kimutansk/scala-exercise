@@ -15,6 +15,16 @@ object ReferenceApp extends App {
     val router1 = system.actorOf(FromConfig.props(Props[MessagePrintActor]),
       "router1")
 
+    // val actor1 = system.actorSelection("akka://ConfiguredRoutingApp/user/router1/$b")
+    // val actor1 = system.actorSelection("/user/router1/$b")
+    val actor1 = system.actorSelection("/user/router1/*")
+    val rootInbox = ActorDSL.inbox()
+    actor1.tell("Path1", rootInbox.getRef())
+    actor1.tell("Path2", rootInbox.getRef())
+
+    val received = rootInbox.receive()
+    println(received)
+
     router1 ! "Test1"
     router1 ! "Test2"
     router1 ! "Test3"
