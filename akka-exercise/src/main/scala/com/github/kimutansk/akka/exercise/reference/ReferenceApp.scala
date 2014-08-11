@@ -3,7 +3,7 @@ package com.github.kimutansk.akka.exercise.reference
 import akka.actor.{ActorDSL, Props, ActorSystem}
 import com.github.kimutansk.akka.exercise.routing.MessagePrintActor
 import scala.concurrent.duration._
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.{TimeoutException, TimeUnit}
 import akka.routing.FromConfig
 
 /**
@@ -22,13 +22,28 @@ object ReferenceApp extends App {
     actor1.tell("Path1", rootInbox.getRef())
     actor1.tell("Path2", rootInbox.getRef())
 
-    val received = rootInbox.receive()
-    println(received)
+    // 非同期処理のため、以後のreceiveがPath2の到着前に実行されるのを防止するために待ちを入れる
+    Thread.sleep(5000)
+
+    val received1 = rootInbox.receive()
+    println("received1:" + received1)
+    val received2 = rootInbox.receive()
+    println("received2:" + received2)
+    val received3 = rootInbox.receive()
+    println("received3:" + received3)
+    try {
+      val received4 = rootInbox.receive()
+      println("received4:" + received4)
+    }
+    catch {
+      case ex:TimeoutException => { println("Exception Occured." + ex.getMessage)}
+    }
+
+    actor1.tell("Path3", rootInbox.getRef())
+    val received5 = rootInbox.receive()
+    println("received5:" + received5)
 
     router1 ! "Test1"
-    router1 ! "Test2"
-    router1 ! "Test3"
-    router1 ! "Test4"
 
     Thread.sleep(5000)
     system.shutdown()
