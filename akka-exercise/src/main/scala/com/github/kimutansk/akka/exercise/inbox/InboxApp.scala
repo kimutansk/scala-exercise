@@ -20,8 +20,15 @@ object InboxApp extends App {
     rootInbox.send(actor1, "Test3")
     rootInbox.send(actor1, "Test4")
 
-    val received = rootInbox.receive()
-    println(received)
+    Thread.sleep(1000)
+
+    val msg1 = rootInbox.receive()
+    println(msg1)
+    val msg2 = rootInbox.receive()
+    println(msg2)
+    val msg3 = rootInbox.receive()
+    println(msg3)
+
 
     Thread.sleep(5000)
     system.shutdown()
