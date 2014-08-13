@@ -1,12 +1,12 @@
 package com.github.kimutansk.akka.exercise.routing
 
-import akka.actor.Actor
+import akka.actor.{ActorLogging, Actor}
 
 
 /**
  * 受信したメッセージを出力するActor
  */
-class MessagePrintActor extends Actor {
+class MessagePrintActor extends Actor with ActorLogging {
 
   def receive = {
     case msg: String => {
