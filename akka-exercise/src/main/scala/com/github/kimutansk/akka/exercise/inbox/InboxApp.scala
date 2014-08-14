@@ -23,11 +23,11 @@ object InboxApp extends App {
     Thread.sleep(1000)
 
     val msg1 = rootInbox.receive()
-    println(msg1)
+    println("Receive1:" + msg1)
     val msg2 = rootInbox.receive()
-    println(msg2)
+    println("Receive2:" + msg2)
     val msg3 = rootInbox.receive()
-    println(msg3)
+    println("Receive3:" + msg3)
 
 
     Thread.sleep(5000)
