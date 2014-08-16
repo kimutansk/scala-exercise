@@ -2,8 +2,7 @@ package com.github.kimutansk.akka.exercise.reference
 
 import akka.actor.{ActorDSL, Props, ActorSystem}
 import com.github.kimutansk.akka.exercise.routing.MessagePrintActor
-import scala.concurrent.duration._
-import java.util.concurrent.{TimeoutException, TimeUnit}
+import java.util.concurrent.TimeoutException
 import akka.routing.FromConfig
 
 /**
@@ -11,19 +10,18 @@ import akka.routing.FromConfig
  */
 object ReferenceApp extends App {
   override def main(args: Array[String]): Unit = {
-    implicit val system = ActorSystem.apply("ConfiguredRoutingApp")
+    implicit val system = ActorSystem.apply("ReferenceApp")
+    // router1配下に$a、$b、$cのActorが生成される
     val router1 = system.actorOf(FromConfig.props(Props[MessagePrintActor]),
       "router1")
 
-    // val actor1 = system.actorSelection("akka://ConfiguredRoutingApp/user/router1/$b")
-    // val actor1 = system.actorSelection("/user/router1/$b")
-    val actor1 = system.actorSelection("/user/router1/*")
+    val actors = system.actorSelection("/user/router1/*")
     val rootInbox = ActorDSL.inbox()
-    actor1.tell("Path1", rootInbox.getRef())
-    actor1.tell("Path2", rootInbox.getRef())
+    actors.tell("Path1", rootInbox.getRef())
+    actors.tell("Path2", rootInbox.getRef())
 
     // 非同期処理のため、以後のreceiveがPath2の到着前に実行されるのを防止するために待ちを入れる
-    Thread.sleep(5000)
+    Thread.sleep(1000)
 
     val received1 = rootInbox.receive()
     println("received1:" + received1)
@@ -39,13 +37,13 @@ object ReferenceApp extends App {
       case ex:TimeoutException => { println("Exception Occured." + ex.getMessage)}
     }
 
-    actor1.tell("Path3", rootInbox.getRef())
+    actors.tell("Path3", rootInbox.getRef())
     val received5 = rootInbox.receive()
     println("received5:" + received5)
 
     router1 ! "Test1"
 
-    Thread.sleep(5000)
+    Thread.sleep(1000)
     system.shutdown()
   }
 }
