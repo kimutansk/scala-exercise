@@ -2,35 +2,20 @@ package com.github.kimutansk.akka.exercise.remote
 
 import akka.actor.{ActorDSL, Props, ActorSystem}
 import com.github.kimutansk.akka.exercise.routing.MessagePrintActor
-import scala.concurrent.duration._
-import java.util.concurrent.TimeUnit
+import com.typesafe.config.ConfigFactory
 
 /**
  * Akka-Remoteを用いて接続を受け付けるクラス
  */
 object RemoteServerApp extends App {
   override def main(args: Array[String]): Unit = {
-    implicit val system = ActorSystem.apply("ConfiguredRoutingApp")
+    val config = ConfigFactory.load("conf/remote-server-app.conf")
+    val system = ActorSystem.apply("RemoteServerApp", config)
+    val actor1 = system.actorOf(Props[MessagePrintActor], "Receive")
 
-    val actor1 = system.actorOf(Props[MessagePrintActor])
+    actor1 ! "Local"
 
-    val rootInbox = ActorDSL.inbox()
-    rootInbox.send(actor1, "Test1")
-    rootInbox.send(actor1, "Test2")
-    rootInbox.send(actor1, "Test3")
-    rootInbox.send(actor1, "Test4")
-
-    Thread.sleep(1000)
-
-    val msg1 = rootInbox.receive()
-    println(msg1)
-    val msg2 = rootInbox.receive()
-    println(msg2)
-    val msg3 = rootInbox.receive()
-    println(msg3)
-
-
-    Thread.sleep(5000)
+    Thread.sleep(60000)
     system.shutdown()
   }
 }
