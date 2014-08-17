@@ -4,13 +4,15 @@ import akka.actor.{ActorDSL, Props, ActorSystem}
 import com.github.kimutansk.akka.exercise.routing.MessagePrintActor
 import java.util.concurrent.TimeoutException
 import akka.routing.FromConfig
+import com.typesafe.config.ConfigFactory
 
 /**
  * Akkaのパス確認を行うサンプル
  */
 object ReferenceApp extends App {
   override def main(args: Array[String]): Unit = {
-    implicit val system = ActorSystem.apply("ReferenceApp")
+    val config = ConfigFactory.load("conf/reference-app.conf")
+    implicit val system = ActorSystem.apply("ReferenceApp", config)
     // router1配下に$a、$b、$cのActorが生成される
     val router1 = system.actorOf(FromConfig.props(Props[MessagePrintActor]),
       "router1")
