@@ -1,7 +1,6 @@
 package com.github.kimutansk.akka.exercise.remote
 
-import akka.actor.{ActorDSL, Props, ActorSystem}
-import com.github.kimutansk.akka.exercise.routing.MessagePrintActor
+import akka.actor.{ActorDSL, ActorSystem}
 import com.typesafe.config.ConfigFactory
 
 /**
@@ -10,10 +9,15 @@ import com.typesafe.config.ConfigFactory
 object RemoteClientApp extends App {
   override def main(args: Array[String]): Unit = {
     val config = ConfigFactory.load("conf/remote-client-app.conf")
-    val system = ActorSystem.apply("RemoteClientApp", config)
+    implicit val system = ActorSystem.apply("RemoteClientApp", config)
     // val remoteActorRef = system.actorSelection("akka.tcp://RemoteServerApp@127.0.0.1:2552/user/Receive")
     val remoteActorRef = system.actorSelection("akka.tcp://RemoteServerApp@127.0.0.1:2552/user/Receive")
-    remoteActorRef ! "Remote"
+
+    val inbox = ActorDSL.inbox()
+    remoteActorRef.tell("Remote", inbox.getRef())
+
+    val received1 = inbox.receive()
+    println("received1:" + received1)
 
     Thread.sleep(10000)
     system.shutdown()
