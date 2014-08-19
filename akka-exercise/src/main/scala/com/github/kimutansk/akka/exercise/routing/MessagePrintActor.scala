@@ -11,7 +11,7 @@ class MessagePrintActor extends Actor with ActorLogging {
   def receive = {
     case msg: String => {
       val message = self.path + ": Received String " + msg
-      println(message)
+      log.info(message)
       sender ! message
     }
   }
