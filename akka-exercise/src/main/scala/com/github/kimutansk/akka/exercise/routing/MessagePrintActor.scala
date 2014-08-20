@@ -14,5 +14,9 @@ class MessagePrintActor extends Actor with ActorLogging {
       log.info(message)
       sender ! message
     }
+    case anyMsg: Any =>{
+      val message = self.path + ": Received Any " + anyMsg
+      log.info(message)
+    }
   }
 }

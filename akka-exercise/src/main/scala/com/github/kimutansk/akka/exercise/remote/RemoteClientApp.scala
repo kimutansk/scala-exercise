@@ -32,7 +32,7 @@ object RemoteClientApp extends App {
     val received3 = inbox.receive()
     println("received3:" + received3)
 
-    Thread.sleep(10000)
+    Thread.sleep(30000)
     system.shutdown()
   }
 }
