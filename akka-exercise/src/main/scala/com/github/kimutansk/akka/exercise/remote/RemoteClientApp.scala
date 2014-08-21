@@ -1,8 +1,9 @@
 package com.github.kimutansk.akka.exercise.remote
 
-import akka.actor.{Props, ActorDSL, ActorSystem}
+import akka.actor._
 import com.typesafe.config.ConfigFactory
 import com.github.kimutansk.akka.exercise.routing.MessagePrintActor
+import akka.remote.RemoteScope
 
 /**
  * Akka-Remoteを用いて接続を受け付けるクラス
@@ -31,6 +32,10 @@ object RemoteClientApp extends App {
     remoteRouterSelectRef.tell("RemoteSelection", inbox.getRef())
     val received3 = inbox.receive()
     println("received3:" + received3)
+
+    val remoteAddress =  AddressFromURIString("akka.tcp://RemoteServerApp@127.0.0.1:2552")
+    val programRemoteRef =system.actorOf(Props[MessagePrintActor].
+      withDeploy(Deploy(scope = RemoteScope(remoteAddress))))
 
     Thread.sleep(30000)
     system.shutdown()
