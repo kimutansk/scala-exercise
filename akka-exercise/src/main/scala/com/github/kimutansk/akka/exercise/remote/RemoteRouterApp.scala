@@ -4,6 +4,7 @@ import akka.actor._
 import com.typesafe.config.ConfigFactory
 import com.github.kimutansk.akka.exercise.routing.MessagePrintActor
 import akka.remote.RemoteScope
+import akka.routing.FromConfig
 
 /**
  * Akka-Remoteを用いて接続を受け付けるクラス
@@ -15,7 +16,7 @@ object RemoteRouterApp extends App {
 
     val inbox = ActorDSL.inbox()
     // RemoteRouterCreate
-    val remoteRouterRef = system.actorOf(Props[MessagePrintActor],
+    val remoteRouterRef = system.actorOf(FromConfig.props(Props[MessagePrintActor]),
       "remotePool")
     remoteRouterRef.tell("RemoteRouter1", inbox.getRef())
     remoteRouterRef.tell("RemoteRouter2", inbox.getRef())
@@ -23,6 +24,13 @@ object RemoteRouterApp extends App {
     remoteRouterRef.tell("RemoteRouter4", inbox.getRef())
     val received1 = inbox.receive()
     println("received1:" + received1)
+    val received2 = inbox.receive()
+    println("received2:" + received2)
+    val received3 = inbox.receive()
+    println("received3:" + received3)
+    val received4 = inbox.receive()
+    println("received4:" + received4)
+
 
 
     Thread.sleep(30000)
