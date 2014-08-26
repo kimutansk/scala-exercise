@@ -31,6 +31,20 @@ object RemoteRouterApp extends App {
     val received4 = inbox.receive()
     println("received4:" + received4)
 
+    val remoteGroupRef = system.actorOf(FromConfig.props(Props[MessagePrintActor]),
+      "remoteGroup")
+    remoteGroupRef.tell("RemoteGroup1", inbox.getRef())
+    remoteGroupRef.tell("RemoteGroup2", inbox.getRef())
+    remoteGroupRef.tell("RemoteGroup3", inbox.getRef())
+    remoteGroupRef.tell("RemoteGroup4", inbox.getRef())
+    val received5 = inbox.receive()
+    println("received5:" + received5)
+    val received6 = inbox.receive()
+    println("received6:" + received6)
+    val received7 = inbox.receive()
+    println("received7:" + received7)
+    val received8 = inbox.receive()
+    println("received8:" + received8)
 
 
     Thread.sleep(30000)
