@@ -46,7 +46,6 @@ object RemoteRouterApp extends App {
     val received8 = inbox.receive()
     println("received8:" + received8)
 
-
     Thread.sleep(30000)
     system.shutdown()
   }
