@@ -18,5 +18,5 @@ class CalculatorImpl(val id: String) extends Calculator {
 
   def squareNow(i: Int): Int = i * i
 
-  def squareTry(i: Int): Int = throw new Exception("Catch me!")
+  def squareTry(i: Int): Int = throw new Exception("Throw Exception!")
  }
