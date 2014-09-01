@@ -33,7 +33,8 @@ object TypedActorApp extends App {
       case ex:Exception => { println("Exception Occured." + ex.getMessage)}
     }
 
-    Thread.sleep(1000)
+    TypedActor(system).poisonPill(calculator)
+
     system.shutdown()
   }
 }
