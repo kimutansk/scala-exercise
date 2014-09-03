@@ -6,13 +6,16 @@ import akka.routing.FromConfig
 import scala.concurrent.Await
 import scala.concurrent.duration.FiniteDuration
 import java.util.concurrent.TimeUnit
+import com.typesafe.config.ConfigFactory
 
 /**
  * TypedActorの確認を行うサンプル
  */
 object TypedActorServerApp extends App {
   override def main(args: Array[String]): Unit = {
-    implicit val system = ActorSystem.apply("TypedActorApp")
+    val config = ConfigFactory.load("conf/remote-server-app.conf")
+    implicit val system = ActorSystem.apply("TypedActorServerApp", config)
+
     val calculator:Calculator =
       TypedActor(system).typedActorOf(TypedProps[CalculatorImpl]())
 

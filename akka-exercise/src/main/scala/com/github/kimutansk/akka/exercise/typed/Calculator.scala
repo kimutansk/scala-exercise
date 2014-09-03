@@ -14,6 +14,8 @@ trait Calculator {
 
   def squareNow(i: Int): Int //blocking send-request-reply
 
+  def pathNow(str: String): String
+
   @throws(classOf[Exception]) //declare it or you will get an UndeclaredThrowableException
   def squareTry(i: Int): Int //blocking send-request-reply with possible exception
 }
