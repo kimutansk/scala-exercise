@@ -15,8 +15,9 @@ object TypedActorClientApp extends App {
   override def main(args: Array[String]): Unit = {
     val config = ConfigFactory.load("conf/remote-client-app.conf")
     implicit val system = ActorSystem.apply("TypedActorClientApp", config)
-    val calculator:Calculator =
-      TypedActor(system).typedActorOf(TypedProps[CalculatorImpl]())
+
+    val remoteAddress = AddressFromURIString("akka.tcp://TypedActorServerApp@127.0.0.1:2552")
+
 
     val dontCareResult = calculator.squareDontCare(99)
     println("dontCareResult:" + dontCareResult)
