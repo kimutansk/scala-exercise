@@ -19,22 +19,7 @@ object TypedActorServerApp extends App {
     val calculator:Calculator =
       TypedActor(system).typedActorOf(TypedProps[CalculatorImpl]())
 
-    val dontCareResult = calculator.squareDontCare(99)
-    println("dontCareResult:" + dontCareResult)
-    val nowResult = calculator.squareNow(100)
-    println("nowResult:" + nowResult)
-    val futureResult = calculator.square(101)
-    println("futureResult:" + Await.result(futureResult, FiniteDuration(10, TimeUnit.SECONDS)))
-    val pleaseResult = calculator.squareNowPlease(102)
-    println("pleaseResult:" + pleaseResult.get)
-
-    try {
-      val tryResult = calculator.squareTry(103)
-      println("tryResult:" + tryResult)
-    }
-    catch {
-      case ex:Exception => { println("Exception Occured." + ex.getMessage)}
-    }
+    Thread.sleep(30000)
 
     TypedActor(system).poisonPill(calculator)
 
