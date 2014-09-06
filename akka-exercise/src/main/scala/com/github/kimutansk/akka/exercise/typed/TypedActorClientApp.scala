@@ -33,6 +33,12 @@ object TypedActorClientApp extends App {
     val path = calculator.pathNow("STR")
     println("pathResult:" + path)
 
+    val remoteAddress2 = AddressFromURIString("akka.tcp://TypedActorServerApp@127.0.0.1:2552")
+    val calculator2:Calculator = TypedActor(system).typedActorOf(TypedProps[CalculatorImpl].
+      withDeploy(Deploy(scope = RemoteScope(remoteAddress))))
+    val path2 = calculator2.pathNow("STR")
+    println("pathResult:" + path2)
+
     TypedActor(system).poisonPill(calculator)
 
     system.shutdown()
