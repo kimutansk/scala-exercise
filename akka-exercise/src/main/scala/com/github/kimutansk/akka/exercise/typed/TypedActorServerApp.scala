@@ -19,7 +19,7 @@ object TypedActorServerApp extends App {
     val calculator:Calculator =
       TypedActor(system).typedActorOf(TypedProps[CalculatorImpl]())
 
-    Thread.sleep(30000)
+    Thread.sleep(60000)
 
     TypedActor(system).poisonPill(calculator)
 

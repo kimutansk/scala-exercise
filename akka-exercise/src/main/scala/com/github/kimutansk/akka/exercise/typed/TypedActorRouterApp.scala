@@ -18,10 +18,15 @@ object TypedActorRouterApp extends App {
 
     val remoteAddress = AddressFromURIString("akka.tcp://TypedActorServerApp@127.0.0.1:2552")
 
-    val routees: List[Calculator] = List.fill(5) {
-      val calculator:Calculator = TypedActor(system).typedActorOf(TypedProps[CalculatorImpl].
+    val calculator:Calculator = TypedActor(system).typedActorOf(TypedProps[CalculatorImpl].
       withDeploy(Deploy(scope = RemoteScope(remoteAddress))))
-      return calculator
+
+    val pathResult = calculator.pathNow("STR")
+    println("pathResult:" + pathResult)
+
+    val routees: List[AnyRef] = List.fill(5) {
+      TypedActor(system).typedActorOf(TypedProps[CalculatorImpl].
+      withDeploy(Deploy(scope = RemoteScope(remoteAddress))))
     }
     val routeePaths = routees map { r =>
       TypedActor(system).getActorRefFor(r).path.toStringWithoutAddress
