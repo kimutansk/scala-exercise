@@ -8,10 +8,14 @@ import scala.Some
 /**
  * Typed Actor検証用のActorコード
  */
-class CalculatorImpl(val id: String) extends Calculator {
+class CalculatorImpl(val id: String) extends Calculator with PreStart {
   // Actorをextendsした場合、TypedActorofメソッドは使用できなくなる。
   // そのため、Actorがもともと持っていたContextやSenderは使用できなくなる？
   def this() = this("default")
+
+  override def preStart = {
+    println(context.self.path + " is started.")
+  }
 
   def squareDontCare(i: Int): Unit = i * i //Nobody cares :(
 

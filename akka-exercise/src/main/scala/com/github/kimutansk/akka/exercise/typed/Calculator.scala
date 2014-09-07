@@ -1,5 +1,7 @@
 package com.github.kimutansk.akka.exercise.typed
 
+import akka.actor.Actor
+
 import scala.concurrent.Future
 
 /**

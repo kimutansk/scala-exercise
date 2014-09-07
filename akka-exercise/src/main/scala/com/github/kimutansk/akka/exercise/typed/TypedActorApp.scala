@@ -25,6 +25,8 @@ object TypedActorApp extends App {
     val pleaseResult = calculator.squareNowPlease(102)
     println("pleaseResult:" + pleaseResult.get)
 
+    // TypedActorが例外を投げるとそのActorは終了した扱いとなる。
+    // そのため、再度初期化(preStart)が呼ばれる。
     try {
       val tryResult = calculator.squareTry(103)
       println("tryResult:" + tryResult)

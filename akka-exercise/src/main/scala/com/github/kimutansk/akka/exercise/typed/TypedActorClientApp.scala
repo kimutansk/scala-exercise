@@ -2,8 +2,6 @@ package com.github.kimutansk.akka.exercise.typed
 
 import akka.actor._
 import akka.remote.RemoteScope
-import com.github.kimutansk.akka.exercise.routing.MessagePrintActor
-import akka.routing.FromConfig
 import scala.concurrent.Await
 import scala.concurrent.duration.FiniteDuration
 import java.util.concurrent.TimeUnit
