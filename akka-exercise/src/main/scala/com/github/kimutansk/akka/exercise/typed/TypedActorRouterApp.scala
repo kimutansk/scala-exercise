@@ -24,10 +24,7 @@ object TypedActorRouterApp extends App {
     val pathResult = calculator.pathNow("STR")
     println("pathResult:" + pathResult)
 
-    val routees: List[AnyRef] = List.fill(5) {
-      TypedActor(system).typedActorOf(TypedProps[CalculatorImpl].
-      withDeploy(Deploy(scope = RemoteScope(remoteAddress))))
-    }
+    val routees: List[Calculator] = List.fill(5)(createCalc(system, remoteAddress))
     val routeePaths = routees map { r =>
       TypedActor(system).getActorRefFor(r).path.toStringWithoutAddress
     }
@@ -51,5 +48,10 @@ object TypedActorRouterApp extends App {
     println("pathResult6:" + pathResult6)
 
     system.shutdown()
+  }
+
+  def createCalc(system: ActorSystem, address:Address): Calculator = {
+    val result:Calculator = TypedActor(system).typedActorOf(TypedProps[CalculatorImpl].withDeploy(Deploy(scope = RemoteScope(address))))
+    return result
   }
 }
