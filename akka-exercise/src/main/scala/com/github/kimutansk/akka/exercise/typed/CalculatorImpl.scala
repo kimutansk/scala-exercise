@@ -25,7 +25,9 @@ class CalculatorImpl(val id: String) extends Calculator with PreStart {
 
   def squareNow(i: Int): Int = {i * i}
 
-  def pathNow(str: String): String = {id + ":" + context.self.path + ", Received:" + str}
+  def pathNow(str: String): String = {
+    println(id + ":" + context.self.path + ", Received:" + str)
+    id + ":" + context.self.path + ", Received:" + str}
 
   def squareTry(i: Int): Int = throw new Exception("Throw Exception!")
 }
