@@ -23,15 +23,15 @@ object TypedActorRouterApp extends App {
     println("pathResult:" + pathResult)
 
     val routees: List[Calculator] = List.fill(5)(createCalc(system, remoteAddress))
-    
+
     routees.foreach{_.pathNow("Test")}
 
     val routeePaths = routees map {
       r =>
-        TypedActor(system).getActorRefFor(r).path.toStringWithoutAddress
+        TypedActor(system).getActorRefFor(r).path.address.toString
     }
 
-    val router: ActorRef = system.actorOf(RoundRobinGroup(routeePaths).props())
+    val router: ActorRef = system.actorOf(RoundRobinGroup(List("akka://TypedActorServerApp/remote/akka.tcp/TypedActorClientApp@127.0.0.1:2553/user/$b", "akka://TypedActorServerApp/remote/akka.tcp/TypedActorClientApp@127.0.0.1:2553/user/$c")).props())
 
     val typedRouter: Calculator =
       TypedActor(system).typedActorOf(TypedProps[CalculatorImpl](), actorRef = router)
