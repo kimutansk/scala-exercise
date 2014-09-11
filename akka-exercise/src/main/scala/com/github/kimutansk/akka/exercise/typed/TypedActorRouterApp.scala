@@ -31,11 +31,12 @@ object TypedActorRouterApp extends App {
         TypedActor(system).getActorRefFor(r).path.address.toString
     }
 
-    val router: ActorRef = system.actorOf(RoundRobinGroup(List("akka://TypedActorServerApp/remote/akka.tcp/TypedActorClientApp@127.0.0.1:2553/user/$b", "akka://TypedActorServerApp/remote/akka.tcp/TypedActorClientApp@127.0.0.1:2553/user/$c")).props())
+    val router: ActorRef = system.actorOf(RoundRobinGroup(routeePaths).props())
 
     val typedRouter: Calculator =
       TypedActor(system).typedActorOf(TypedProps[CalculatorImpl](), actorRef = router)
 
+    // TODO TimeoutException Occur. why?
     val pathResult1 = typedRouter.pathNow("STR1")
     println("pathResult1:" + pathResult1)
     val pathResult2 = typedRouter.pathNow("STR2")
