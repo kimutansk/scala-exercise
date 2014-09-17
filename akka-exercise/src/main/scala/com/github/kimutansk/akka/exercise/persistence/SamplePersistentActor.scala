@@ -6,14 +6,14 @@ import akka.persistence.PersistentActor
 /**
  *
  */
-class SamplePersistentActor extends PersistentActor with ActorLogging {
+class SamplePersistentActor(name: String) extends PersistentActor with ActorLogging {
 
-  override def persistenceId: String = "SamplePersistentActor"
+  override def persistenceId: String = "SamplePersistentActor" + name
 
   var stateCount = 1
 
   override def receiveCommand: SamplePersistentActor#Receive = {
-    case "path" => self.path
+    case "path" => context.sender ! self.path
     case "print" => println(self.path + ":" + stateCount)
     case "snap" => saveSnapshot(stateCount)
     case "view" => context.sender ! self.path + ":" + stateCount
