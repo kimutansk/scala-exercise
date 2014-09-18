@@ -1,7 +1,7 @@
 package com.github.kimutansk.akka.exercise.persistence
 
 import akka.actor.ActorLogging
-import akka.persistence.PersistentActor
+import akka.persistence.{SnapshotOffer, PersistentActor}
 
 /**
  *
@@ -21,6 +21,8 @@ class SamplePersistentActor(name: String) extends PersistentActor with ActorLogg
   }
 
   override def receiveRecover: SamplePersistentActor#Receive = {
+    case SnapshotOffer(_, snapshot: Int) => stateCount = snapshot
     case message: String => stateCount += message.length
+    case other:Any => println(self.path + "(" + stateCount + "):" + other)
   }
 }
