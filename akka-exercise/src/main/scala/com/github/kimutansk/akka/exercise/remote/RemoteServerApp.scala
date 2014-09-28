@@ -1,6 +1,6 @@
 package com.github.kimutansk.akka.exercise.remote
 
-import akka.actor.{ActorDSL, Props, ActorSystem}
+import akka.actor.{Props, ActorSystem}
 import com.github.kimutansk.akka.exercise.routing.MessagePrintActor
 import com.typesafe.config.ConfigFactory
 import akka.routing.FromConfig
@@ -12,10 +12,14 @@ object RemoteServerApp extends App {
   override def main(args: Array[String]): Unit = {
     val config = ConfigFactory.load("conf/remote-server-app.conf")
     implicit val system = ActorSystem.apply("RemoteServerApp", config)
-    Thread.sleep(10000)
+    val actor1 = system.actorOf(Props[MessagePrintActor], "Receive")
 
-    Thread.sleep(30000)
+    actor1 ! "Local"
 
+    // ローカスプロセス上にRoutingされたActorを生成
+    system.actorOf(FromConfig.props(Props[MessagePrintActor]),"remotePool")
+
+    Thread.sleep(60000)
     system.shutdown()
   }
 }

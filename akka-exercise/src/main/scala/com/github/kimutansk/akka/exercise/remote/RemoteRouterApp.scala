@@ -3,11 +3,10 @@ package com.github.kimutansk.akka.exercise.remote
 import akka.actor._
 import com.typesafe.config.ConfigFactory
 import com.github.kimutansk.akka.exercise.routing.MessagePrintActor
-import akka.remote.RemoteScope
 import akka.routing.FromConfig
 
 /**
- * Akka-Remoteを用いて接続を受け付けるクラス
+ * Akka-Remoteを用いてRouting接続し、メッセージを送信するサンプル
  */
 object RemoteRouterApp extends App {
   override def main(args: Array[String]): Unit = {
@@ -15,7 +14,7 @@ object RemoteRouterApp extends App {
     implicit val system = ActorSystem.apply("RemoteRouterApp", config)
 
     val inbox = ActorDSL.inbox()
-    // RemoteRouterCreate
+    // デプロイ先プロセスを指定してRouterをデプロイ
     val remoteRouterRef = system.actorOf(FromConfig.props(Props[MessagePrintActor]),
       "remotePool")
     remoteRouterRef.tell("RemoteRouter1", inbox.getRef())
@@ -31,6 +30,7 @@ object RemoteRouterApp extends App {
     val received4 = inbox.receive()
     println("received4:" + received4)
 
+    // 接続先パスを指定してRouterを生成
     val remoteGroupRef = system.actorOf(FromConfig.props(Props[MessagePrintActor]),
       "remoteGroup")
     remoteGroupRef.tell("RemoteGroup1", inbox.getRef())
