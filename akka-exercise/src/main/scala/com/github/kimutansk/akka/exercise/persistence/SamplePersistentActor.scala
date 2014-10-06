@@ -4,13 +4,13 @@ import akka.actor.ActorLogging
 import akka.persistence.{SnapshotOffer, PersistentActor}
 
 /**
- *
+ * Akka-Persistenceの確認を行うサンプルActor
  */
 class SamplePersistentActor(name: String) extends PersistentActor with ActorLogging {
 
   override def persistenceId: String = "SamplePersistentActor" + name
 
-  var stateCount = 1
+  var stateCount = 0
 
   override def receiveCommand: SamplePersistentActor#Receive = {
     case "path" => context.sender ! self.path
@@ -22,7 +22,6 @@ class SamplePersistentActor(name: String) extends PersistentActor with ActorLogg
 
   override def receiveRecover: SamplePersistentActor#Receive = {
     case SnapshotOffer(_, snapshot: Int) => stateCount = snapshot
-    case message: String => stateCount += message.length
     case other:Any => println(self.path + "(" + stateCount + "):" + other)
   }
 }
